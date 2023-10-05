@@ -7,6 +7,7 @@ const ProductList = ({}) => {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState("");
   const [islLoading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetch("https://grocery-product-list-backend-syvs.vercel.app/product")
@@ -21,6 +22,13 @@ const ProductList = ({}) => {
         console.error("Error fetching data:", error.message);
       });
   }, []);
+  const searchHandle = (e) => {
+    console.log(e.target.value);
+    setSearchTerm(e.target.value);
+  };
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="mx-4 my-4md:mx-16 md:my-10">
@@ -29,13 +37,14 @@ const ProductList = ({}) => {
         id="search-navbar"
         className="block  lg:w-1/3 p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg mb-5 mx-auto mt-4"
         placeholder="Search..."
+        onChange={searchHandle}
       />
       <div>
         {islLoading !== true ? (
           error === "" ? (
-            products.length !== 0 ? (
+            filteredProducts.length !== 0 ? (
               <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-                {products.map((product) => (
+                {filteredProducts.map((product) => (
                   <div
                     className="max-w-sm  rounded overflow-hidden shadow-lg border border-2"
                     key={product.id}
