@@ -8,6 +8,8 @@ const ProductList = ({}) => {
   const [error, setError] = useState("");
   const [islLoading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [item, setItem] = useState([]);
 
   useEffect(() => {
     fetch("https://grocery-product-list-backend-syvs.vercel.app/product")
@@ -29,6 +31,17 @@ const ProductList = ({}) => {
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+    setItem([]);
+  };
+
+  const modalHandle = (product) => {
+    const selectedItem = product;
+    setIsOpen(true);
+    setItem(selectedItem);
+  };
 
   return (
     <div className="mx-4 my-4md:mx-16 md:my-10">
@@ -61,6 +74,7 @@ const ProductList = ({}) => {
                         <button
                           type="button"
                           className="text-white bg-blue-700 hover:bg-blue-800  font-medium rounded-lg text-sm ml-auto  p-2  "
+                          onClick={() => modalHandle(product)}
                         >
                           See more
                         </button>
@@ -104,6 +118,50 @@ const ProductList = ({}) => {
           </div>
         )}
       </div>
+      {isOpen && (
+        <Modal
+          isOpen={isOpen}
+          onRequestClose={toggleModal}
+          ariaHideApp={false}
+          className="fixed bottom-0 right-0 inset-y-1/4 md:inset-1/4 w-full  md:w-2/4   p-8 md:p-0"
+        >
+          <div className="modal-content bg-white p-6 rounded-lg shadow-lg border border-2 ">
+            {/* <h2 className="text-xl font-semibold mb-4">{item.name}</h2> */}
+            <div className="flex">
+              <button
+                onClick={toggleModal}
+                className=" bg-white text-lg text-black font-bold py-2 px-4 rounded ml-auto"
+              >
+                X
+              </button>
+            </div>
+            <img
+              className="h-44 md:h-48 lg:h-52 xl:h-56  mx-auto"
+              src={item.link}
+            />
+            <div className="px-6 pt-4 pb-2  ">
+              <div className="flex">
+                <p className="font-bold w-1/2">{item.name}</p>
+                <p className="text-sm    font-medium rounded-lg text-sm ml-auto  p-2 ">
+                  Price : {item.price} $
+                </p>
+              </div>
+            </div>
+            <span className="">{item.description}</span>
+            <div className="flex">
+              <button className="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-auto">
+                Place in Cart
+              </button>
+              <button
+                onClick={toggleModal}
+                className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-auto"
+              >
+                Close Modal
+              </button>
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };
