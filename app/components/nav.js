@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import { totalNumberOfItem } from "./ProductHandler.js";
 import Cart from "./cart/cart.js";
 import OrderSuccessful from "./cart/orderSuccessful.js";
