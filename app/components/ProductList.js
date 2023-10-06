@@ -1,27 +1,30 @@
 "use client";
 import React, { useEffect, useState } from "react";
-
+import { addToLocalStorage, totalNumberOfItem } from "./ProductHandler.js";
 import Modal from "react-modal";
 
-const ProductList = ({}) => {
+const ProductList = ({ updateCart, numberOfCartItems }) => {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState("");
   const [islLoading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [item, setItem] = useState([]);
+  const [cartConfirmation, setCartConfirmation] = useState(false);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetch("https://grocery-product-list-backend-syvs.vercel.app/product")
+    fetch("http://192.168.0.109:3000/product")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
         setLoading(false);
+        //console.log(data);
       })
       .catch((error) => {
         setLoading(false);
         setError(error.message);
-        console.error("Error fetching data:", error.message);
+        //console.error("Error fetching data:", error.message);
       });
   }, []);
   const searchHandle = (e) => {
@@ -35,12 +38,41 @@ const ProductList = ({}) => {
   const toggleModal = () => {
     setIsOpen(!isOpen);
     setItem([]);
+    setCartConfirmation(false);
   };
 
   const modalHandle = (product) => {
     const selectedItem = product;
     setIsOpen(true);
     setItem(selectedItem);
+  };
+
+  const productOrder = () => {
+    setIsOpen(false);
+    setCartConfirmation(true);
+    setTimeout(() => {
+      setCartConfirmation(false);
+    }, 1500);
+    const type = addToLocalStorage(updateCart, item);
+    setMessage(type);
+
+    /*const cartList = JSON.parse(localStorage.getItem("cartItems")) || [];
+    const isInList = cartList.find((p) => p.id === item.id);
+    if (isInList) {
+      setMessage("Item is already in the cart");
+      //console.log("Item is already in the cart");
+      console.log(cartList);
+    } else {
+      item.count = 1;
+      cartList.push(item);
+      localStorage.setItem("cartItems", JSON.stringify(cartList));
+      setMessage("Item added to the cart.");
+      updateCart();
+    }*/
+  };
+  const productModalHide = () => {
+    setCartConfirmation(false);
+    setItem([]);
   };
 
   return (
@@ -118,6 +150,57 @@ const ProductList = ({}) => {
           </div>
         )}
       </div>
+      {cartConfirmation && (
+        <div className="fixed bottom-0 right-0 inset-y-1/4 md:inset-1/4 w-full h-fit md:w-2/4  p-8 md:p-0">
+          <div className="modal-content bg-white p-6 rounded-lg shadow-lg border border-2 ">
+            <div className="flex">
+              <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 rounded-lg">
+                <svg
+                  className="w-5 h-5"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                </svg>
+                <span className="sr-only">Check icon</span>
+              </div>
+              <h2 className="text-xl font-semibold mb-4">{message}</h2>
+              {/* <button
+                className=" bg-white text-lg text-black font-bold py-2 px-4 rounded ml-auto"
+                onClick={cartMessageHide}
+              >
+                X
+              </button> */}
+              <button
+                type="button"
+                className="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 inline-flex items-center justify-center h-8 w-8 "
+                data-dismiss-target="#toast-success"
+                aria-label="Close"
+                onClick={productModalHide}
+              >
+                <span className="sr-only">Close</span>
+                <svg
+                  className="w-3 h-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 14 14"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokewidth-="2"
+                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {isOpen && (
         <Modal
           isOpen={isOpen}
@@ -149,7 +232,10 @@ const ProductList = ({}) => {
             </div>
             <span className="">{item.description}</span>
             <div className="flex">
-              <button className="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-auto">
+              <button
+                className="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-auto"
+                onClick={productOrder}
+              >
                 Place in Cart
               </button>
               <button

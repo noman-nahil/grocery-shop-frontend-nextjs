@@ -1,11 +1,37 @@
 "use client";
 import { useState } from "react";
+import { totalNumberOfItem } from "./ProductHandler.js";
+import Cart from "./cart/cart.js";
+import OrderSuccessful from "./cart/orderSuccessful.js";
 
-const nav = () => {
+const nav = ({ cartItem, removeCart, numberOfCartItems, removeItem }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isSuccessful, setSuccesful] = useState(false);
+  const toggleCart = () => {
+    setIsCartOpen(!isCartOpen);
+  };
+
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
   };
+  const placeOrder = () => {
+    setIsCartOpen(false);
+    localStorage.removeItem("cartItems");
+    localStorage.removeItem("numberOfCartItems  ");
+    removeCart();
+    //console.log(numberOfCartItems);
+    setSuccesful(true);
+    setTimeout(() => {
+      setSuccesful(false);
+    }, 1500);
+  };
+  const orderMsgHide = () => {
+    setSuccesful(false);
+  };
+  // console.log(removeItem);
+  // console.log(numberOfCartItems);
+
   return (
     <nav className="bg-gray-900">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -49,11 +75,14 @@ const nav = () => {
         >
           <ul className="mr-6 font-medium flex flex-col p-4 md:p-0 mt-4  rounded-lg  md:flex-row md:space-x-8 md:mt-0 md:border-0">
             <li>
-              <button className="block py-2 pl-3 pr-4 text-gray-50 rounded  md:border-0  md:p-0">
+              <button
+                className="block py-2 pl-3 pr-4 text-gray-50 rounded  md:border-0  md:p-0"
+                onClick={toggleCart}
+              >
                 <div className="relative py-2">
                   <div className="t-0 absolute left-3">
                     <p className="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-3 text-xs text-white">
-                      10
+                      {numberOfCartItems}
                     </p>
                   </div>
                   <svg
@@ -76,6 +105,20 @@ const nav = () => {
           </ul>
         </div>
       </div>
+      {isCartOpen && (
+        <Cart
+          toggleCart={toggleCart}
+          placeOrder={placeOrder}
+          cartItem={cartItem}
+          removeItem={removeItem}
+        />
+      )}
+      {isSuccessful && (
+        <OrderSuccessful
+          orderSuccessful={isSuccessful}
+          orderMsgHide={orderMsgHide}
+        />
+      )}
     </nav>
   );
 };
