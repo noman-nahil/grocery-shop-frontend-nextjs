@@ -14,7 +14,7 @@ const ProductList = ({ updateCart, numberOfCartItems }) => {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetch("http://192.168.0.109:3000/product")
+    fetch(process.env.APP_API)
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
