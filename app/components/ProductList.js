@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { addToLocalStorage, totalNumberOfItem } from "./ProductHandler.js";
 import Modal from "react-modal";
@@ -98,6 +99,7 @@ const ProductList = ({ updateCart, numberOfCartItems }) => {
                       <img
                         className="h-44 md:h-48 lg:h-52 xl:h-56  mx-auto"
                         src={product.link}
+                        alt={product.name}
                       />
                     </div>
                     <div className="pr-2 md:px-6 pt-4 pb-2  ">

@@ -70,7 +70,7 @@ const Cart = (props) => {
             </tr>
             {/* </thead> */}
             {cartItem.map((item) => (
-              <tr>
+              <tr key={item.id}>
                 <td scope="col" className=" md:px-6">
                   {item.name}
                 </td>

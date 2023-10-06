@@ -4,7 +4,7 @@ import { totalNumberOfItem } from "./ProductHandler.js";
 import Cart from "./cart/cart.js";
 import OrderSuccessful from "./cart/orderSuccessful.js";
 
-const nav = ({ cartItem, removeCart, numberOfCartItems, removeItem }) => {
+const Nav = ({ cartItem, removeCart, numberOfCartItems, removeItem }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSuccessful, setSuccesful] = useState(false);
@@ -123,4 +123,4 @@ const nav = ({ cartItem, removeCart, numberOfCartItems, removeItem }) => {
   );
 };
 
-export default nav;
+export default Nav;
