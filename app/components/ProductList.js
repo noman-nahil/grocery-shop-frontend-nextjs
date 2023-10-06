@@ -15,7 +15,7 @@ const ProductList = ({ updateCart, numberOfCartItems }) => {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetch(process.env.APP_API)
+    fetch(process.env.NEXT_PUBLIC_APP_API)
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
