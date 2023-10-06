@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProductList from "./components/ProductList";
 import Nav from "./components/nav";
 import {
@@ -7,11 +7,15 @@ import {
   getFromLocalStorage,
 } from "./components/ProductHandler";
 export default function Home() {
+  const [isClient, setIsClient] = useState(false);
   const [numberOfCartItems, setNumberOfCartItems] = useState(
     totalNumberOfItem()
   );
   const [cartItem, setCartItem] = useState(getFromLocalStorage());
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   const updateCart = () => {
     setNumberOfCartItems(numberOfCartItems + 1);
     localStorage.setItem("numberOfCartItems  ", numberOfCartItems + 1);
@@ -26,20 +30,27 @@ export default function Home() {
     localStorage.setItem("numberOfCartItems  ", numberOfCartItems - 1);
     setCartItem(JSON.parse(window.localStorage.getItem("cartItems")));
   };
+
   //console.log(totalNumberOfItem());
   return (
     <>
-      <Nav
-        numberOfCartItems={numberOfCartItems}
-        removeCart={removeCart}
-        removeItem={removeItem}
-        updateCart={updateCart}
-        cartItem={cartItem}
-      />
-      <ProductList
-        updateCart={updateCart}
-        numberOfCartItems={numberOfCartItems}
-      />
+      {isClient ? (
+        <>
+          <Nav
+            numberOfCartItems={numberOfCartItems}
+            removeCart={removeCart}
+            removeItem={removeItem}
+            updateCart={updateCart}
+            cartItem={cartItem}
+          />
+          <ProductList
+            updateCart={updateCart}
+            numberOfCartItems={numberOfCartItems}
+          />
+        </>
+      ) : (
+        "Prerendered"
+      )}
     </>
   );
 }

@@ -16,7 +16,11 @@ const Cart = (props) => {
     item.count = item.count + 1;
     const updatedArray = [...cartItem];
     setCartItem(updatedArray);
-    localStorage.setItem("cartItems", JSON.stringify(updatedArray));
+
+    if (typeof window !== "undefined") {
+      localStorage.setItem("cartItems", JSON.stringify(updatedArray));
+    } else {
+    }
   };
 
   const decrement = (item) => {
@@ -24,15 +28,20 @@ const Cart = (props) => {
       item.count = item.count - 1;
       const updatedArray = [...cartItem];
       setCartItem(updatedArray);
-      localStorage.setItem("cartItems", JSON.stringify(updatedArray));
+      if (typeof window !== "undefined") {
+        localStorage.setItem("cartItems", JSON.stringify(updatedArray));
+      }
     }
   };
   const deleteItem = (item) => {
     const updatedList = cartItem.filter((i) => i.id !== item.id);
     setCartItem(updatedList);
-    localStorage.setItem("cartItems", JSON.stringify(updatedList));
+    if (typeof window !== "undefined") {
+      localStorage.setItem("cartItems", JSON.stringify(updatedList));
+    }
     props.removeItem();
   };
+
   // console.log(props);
   return (
     <Modal

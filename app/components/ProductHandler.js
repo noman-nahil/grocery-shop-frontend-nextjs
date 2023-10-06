@@ -1,6 +1,8 @@
 export const getFromLocalStorage = () => {
-  const itemList = JSON.parse(localStorage.getItem("cartItems")) || [];
-  return itemList;
+  if (typeof window !== "undefined") {
+    const itemList = JSON.parse(localStorage.getItem("cartItems")) || [];
+    return itemList;
+  }
 };
 
 export const addToLocalStorage = (updateCart, item) => {
@@ -12,20 +14,26 @@ export const addToLocalStorage = (updateCart, item) => {
     } else {
       item.count = 1;
       list.push(item);
-      localStorage.setItem("cartItems", JSON.stringify(list));
-      updateCart();
-      return "Item added to the cart.";
+      if (typeof window !== "undefined") {
+        localStorage.setItem("cartItems", JSON.stringify(list));
+        updateCart();
+        return "Item added to the cart.";
+      }
     }
   } else {
     item.count = 1;
     list.push(item);
-    localStorage.setItem("cartItems", JSON.stringify(list));
-    updateCart();
-    //console.log(item);
-    return "Item added to the cart.";
+    if (typeof window !== "undefined") {
+      localStorage.setItem("cartItems", JSON.stringify(list));
+      updateCart();
+      //console.log(item);
+      return "Item added to the cart.";
+    }
   }
 };
 export const totalNumberOfItem = () => {
-  const item = parseInt(localStorage.getItem("numberOfCartItems  ") || 0);
-  return item;
+  if (typeof window !== "undefined") {
+    const item = parseInt(localStorage.getItem("numberOfCartItems  ") || 0);
+    return item;
+  }
 };
