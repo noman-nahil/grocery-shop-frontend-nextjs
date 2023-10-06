@@ -52,23 +52,23 @@ const Cart = (props) => {
         </div>
         {cartItem.length !== 0 ? (
           <table className="w-full text-sm text-center text-gray-900 ">
-            <thead className="text-xs text-gray-900 uppercase bg-white ">
-              <tr>
-                <th scope="col" className="md:px-6 md:py-3">
-                  item name
-                </th>
-                <th scope="col" className="md:px-6 py-3">
-                  item count
-                </th>
+            {/* <thead className="text-xs text-gray-900 uppercase bg-white "> */}
+            <tr>
+              <th scope="col" className="md:px-6 md:py-3">
+                item name
+              </th>
+              <th scope="col" className="md:px-6 py-3">
+                item count
+              </th>
 
-                <th scope="col" className="md:px-6 py-3">
-                  Price
-                </th>
-                <th scope="col" className="md:px-6 py-3">
-                  Amount
-                </th>
-              </tr>
-            </thead>
+              <th scope="col" className="md:px-6 py-3">
+                Price
+              </th>
+              <th scope="col" className="md:px-6 py-3">
+                Amount
+              </th>
+            </tr>
+            {/* </thead> */}
             {cartItem.map((item) => (
               <tr>
                 <td scope="col" className=" md:px-6">
@@ -105,19 +105,19 @@ const Cart = (props) => {
                 </td>
               </tr>
             ))}
-            <thead className="text-xs text-gray-900 uppercase bg-white ">
-              <tr>
-                <th scope="col" className="md:px-6 py-3"></th>
-                <th scope="col" className="md:px-6 py-3"></th>
+            {/* <thead className="text-xs text-gray-900 uppercase bg-white "> */}
+            <tr>
+              <th scope="col" className="md:px-6 py-3"></th>
+              <th scope="col" className="md:px-6 py-3"></th>
 
-                <th scope="col" className="md:px-6 py-3">
-                  Total
-                </th>
-                <th scope="col" className="px-1 md:px-6 py-3">
-                  {totalValue}
-                </th>
-              </tr>
-            </thead>
+              <th scope="col" className="md:px-6 py-3">
+                Total
+              </th>
+              <th scope="col" className="px-1 md:px-6 py-3">
+                {totalValue}
+              </th>
+            </tr>
+            {/* </thead> */}
           </table>
         ) : (
           <p className="text-center ">There is no items in cart</p>

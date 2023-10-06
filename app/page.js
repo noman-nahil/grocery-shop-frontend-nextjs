@@ -11,6 +11,7 @@ export default function Home() {
     totalNumberOfItem()
   );
   const [cartItem, setCartItem] = useState(getFromLocalStorage());
+
   const updateCart = () => {
     setNumberOfCartItems(numberOfCartItems + 1);
     localStorage.setItem("numberOfCartItems  ", numberOfCartItems + 1);
@@ -25,7 +26,7 @@ export default function Home() {
     localStorage.setItem("numberOfCartItems  ", numberOfCartItems - 1);
     setCartItem(JSON.parse(window.localStorage.getItem("cartItems")));
   };
-  console.log(totalNumberOfItem());
+  //console.log(totalNumberOfItem());
   return (
     <>
       <Nav
